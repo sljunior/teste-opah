@@ -53,8 +53,7 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 
 ### Desenho da solução (Arquitetura alvo)
 
-
-![](assets/20251213_165632_Arquitetura.png)
+![](arquitetura/Arquitetura.png)
 
 ### Estimativa de Custos
 
@@ -62,9 +61,9 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 
 #### Licenças/Assinaturas necessárias
 
-#### Monitoramento e Observabilidade
+### Monitoramento e Observabilidade
 
-#### Critérios de Segurança
+### Critérios de Segurança
 
 ## Mapa de Decisões
 
@@ -81,7 +80,7 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 
 ### Decisões de Arquitetura
 
-1. Serviços necessários: No processo de criação da arquitetura e levando em conta a quantidade de requisições que o negócio exige, optei por separar as responsabilidades em três serviços com responsabilidades bem definidas:
+1. **Serviços necessários**: No processo de criação da arquitetura e levando em conta a quantidade de requisições que o negócio exige, optei por separar as responsabilidades em três serviços com responsabilidades bem definidas:
 
 
 | Serviço                   | Responsabilidade                                                                                                                                                                                                                                            |
@@ -90,11 +89,22 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 | cashflow-processor-service | Leitura assincrona da fila de lançamentos financeiros; Serviço será responsável por qualquer cálculo extra necessário no momento da criação dos registros que vão compor o fluxo de caixa. Este serviço não recebe chamadas de outros serviços; |
 | cashflow-service-api       | Somente Leitura: responsável por ler os dados pré-calculados do fluxo de caixa e devolter ao usuário                                                                                                                                                     |
 
-2. Escolha do banco de dados: Optei por banco relacional (PostGreSql) tanto para gravação inicial dos dados quanto do Fluxo de caixa, entendendo que:
-
+2. **Escolha do banco de dados**: Optei por banco relacional (PostGreSql) tanto para gravação inicial dos dados quanto do Fluxo de caixa, entendendo que:
    1. Dados financeiros são críticos, demandam que o armazenamento também garanta integridade transacional das informações;
    2. Postgresql atende o requisito de volume esperado tanto de gravações e leituras por segundo;
    3. A escalabilidade horizontal dos serviços garante que o processamento pelos serviços não serão o gargalo técnico das operações
+3. **Escolha da Linguagem**: Para o exercício optei pelo Node.js com Typescript, pela simplicidade de codificação da linguagem, mas também considerando ser uma linguagem
+   1. Amplamente difundida no mercado e com baixa curva de aprendizado, facilitando recrutamento de desenvolvedores;
+   2. Grande comunidade ativa, facilitando a obtenção de pacotes e frameworks;
+   3. Problema e solução propostos focam em I/O, sem cálculos complexos;
+   4. Entrega performace suficiente para atendimento dos requisitos de negócio, mesmo em produção;
+
+Ponto de Atenção: Não considerei para esta avaliação a
+
+**Alternativas Avaliadas**:
+
+- **Clojure (Java)**: Atende os requisitos do exercício em um cenário produtivo estruturamente indicada em cenários de cálculos em ****memória e alto paralelismo, podendo ser uma excelente escolha dependendo do restante da arquitetura da solução, principalmente para o cashflow-processor-service;
+- **Rust**: Curva de aprendizado complexa, além de ser necessários controles de estado de alta complexidade; Meu disgnóstico é que é uma solução mais robusta e complexa do que o cenário de negócio exige
 
 ## Detalhamento técnico
 
