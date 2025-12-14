@@ -1,0 +1,20 @@
+[
+  {
+    "transactionId": "9a53cb73-81a4-40c4-a37f-c2271d2e588a",
+    "date": "2025-12-14T22:57:37.968Z",
+    "value": 195.85,
+    "type": "credit",
+    "originalDocumentId": "dossdddc-1234li",
+    "createdBy": "sjunior",
+    "status": "active"
+  },
+  {
+    "transactionId": "9a53cb73-81a4-40c4-a37f-c2271d2e588a",
+    "date": "2025-12-14T22:57:37.968Z",
+    "value": 195.85,
+    "type": "credit",
+    "originalDocumentId": "dossdddc-1234li",
+    "createdBy": "sjunior",
+    "status": "inactive"
+  }
+]

@@ -99,7 +99,7 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
    3. Problema e solução propostos focam em I/O, sem cálculos complexos;
    4. Entrega performace suficiente para atendimento dos requisitos de negócio, mesmo em produção;
 
-Ponto de Atenção: Não considerei para esta avaliação a
+4. **Controle de Eventos**: Para conseguir testar integração entre serviços no exercício proposto de forma simples, optei por salvar arquivos Json com os dados simulando a fila. Assim fica uma estrutura verificável a cada lançamento.
 
 **Alternativas Avaliadas**:
 
