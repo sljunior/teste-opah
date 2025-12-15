@@ -3,6 +3,8 @@ export interface TransactionCreatedEvent {
   date: string;
   value: number;
   type: "debit" | "credit";
+  group: "OPERATIONAL" | "FINANCIAL" | "INVESTMENT"
+  category: string;
   originalDocumentId: string;
   createdBy: string;
   status: "active" | "inactive";

@@ -5,7 +5,9 @@ import { Transaction } from "../../src/domain/entitites/Transaction";
 import { TransactionInactivatedEvent } from "../../src/application/events/transactionInactivatedEvent";
 import { EventPublisher } from "../../src/application/ports/eventPublisher";
 
-class FakeEventPublisher implements EventPublisher<TransactionInactivatedEvent> {
+class FakeEventPublisher
+  implements EventPublisher<TransactionInactivatedEvent>
+{
   public events: TransactionInactivatedEvent[] = [];
 
   async publish(event: TransactionInactivatedEvent): Promise<void> {
@@ -30,6 +32,8 @@ describe("InactivateTransactionUseCase", () => {
       date: new Date(),
       value: 100,
       type: "credit",
+      group: "OPERATIONAL",
+      category: "Receita de Venda",
       originalDocumentId: "doc-123",
       createdBy: "user-1",
     });
@@ -56,7 +60,7 @@ describe("InactivateTransactionUseCase", () => {
 
   test("should throw error if transaction does not exist", async () => {
     const input = { transactionId: "invalid-id", userId: "user-2" };
-    
+
     await expect(useCase.execute(input)).rejects.toThrow(
       "Transação não encontrada"
     );

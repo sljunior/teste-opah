@@ -8,6 +8,8 @@ describe("Transaction Entity", () => {
       date: new Date(),
       value: 100,
       type: "credit",
+      group: "OPERATIONAL",
+      category: "Receita de Venda",
       originalDocumentId: "doc-123",
       createdBy: "user-1",
     });
@@ -26,6 +28,8 @@ describe("Transaction Entity", () => {
         date: new Date(),
         value: 100,
         type: "wrong type" as any,
+        group: "OPERATIONAL",
+        category: "Receita de Venda",
         originalDocumentId: "doc-123",
         createdBy: "user-1",
       })
@@ -39,6 +43,8 @@ describe("Transaction Entity", () => {
         date: undefined as any,
         value: 100,
         type: "credit",
+        group: "OPERATIONAL",
+        category: "Receita de Venda",
         originalDocumentId: "doc-123",
         createdBy: "user-1",
       })
@@ -52,6 +58,8 @@ describe("Transaction Entity", () => {
         date: new Date(),
         value: 100,
         type: "credit",
+        group: "OPERATIONAL",
+        category: "Receita de Venda",
         originalDocumentId: "doc-123",
         createdBy: undefined as any,
       })
@@ -70,7 +78,6 @@ describe("Transaction Entity", () => {
 
   test("should not inactivate transaction without user", () => {
     const transaction = buildTransaction();
-    
 
     expect(() => transaction.inactivate("")).toThrow(
       "Ao excluir uma transação, o usuário de exclusão deve ser informado"

@@ -8,6 +8,8 @@ interface CreateTransactionInput {
   date: Date;
   value: number;
   type: "debit" | "credit";
+  group: "OPERATIONAL" | "FINANCIAL" | "INVESTMENT";
+  category: string;
   originalDocumentId: string;
   createdBy: string;
 }
@@ -35,9 +37,11 @@ export class CreateTransactionUseCase {
         date: transaction.date.toISOString(),
         value: transaction.value,
         type: transaction.type,
+        group: transaction.group,
+        category: transaction.catogory,
         originalDocumentId: transaction.originalDocumentId,
         createdBy: transaction.createdBy,
-        status: transaction.status
+        status: transaction.status,
       });
 
       return transaction;

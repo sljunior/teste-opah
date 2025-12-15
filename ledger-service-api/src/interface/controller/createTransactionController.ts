@@ -7,12 +7,14 @@ export class CreateTransactionController {
     private readonly createTransactionUseCase: CreateTransactionUseCase
   ) {}
   async create(req: Request, res: Response): Promise<Response> {
-    const { date, value, type, originalDocumentId, createdBy } = req.body;
+    const { date, value, type, group, category, originalDocumentId, createdBy } = req.body;
     try {
       const newTransaction =  await this.createTransactionUseCase.execute({
         date: new Date(date),
         value,
         type,
+        group,
+        category,
         originalDocumentId,
         createdBy,
       });

@@ -1,25 +1,27 @@
-export type TransactionType = 'debit' | 'credit';
-export type TransactionStatus = 'active' | 'inactive';
+export type TransactionType = "debit" | "credit";
+export type TransactionStatus = "active" | "inactive";
+export type TransactionGroup = "OPERATIONAL" | "FINANCIAL" | "INVESTMENT";
 
 export interface TransactionProps {
   id: string;
   date: Date;
   value: number;
   type: TransactionType;
+  group: TransactionGroup;
+  category: string;
   originalDocumentId: string;
   createdBy: string;
 }
 
-
 export class Transaction {
-
   public readonly id: string;
   public readonly date: Date;
   public readonly value: number;
   public readonly type: TransactionType;
+  public readonly group: TransactionGroup;
+  public readonly catogory: string;
   public readonly originalDocumentId: string;
   public readonly createdBy: string;
-
   public status: TransactionStatus;
   public readonly creationDate: Date;
   public inactivatedBy?: string;
@@ -30,9 +32,11 @@ export class Transaction {
     this.date = props.date;
     this.value = props.value;
     this.type = props.type;
+    this.group = props.group;
+    this.catogory = props.category;
     this.originalDocumentId = props.originalDocumentId;
     this.createdBy = props.createdBy;
-    this.status = 'active';
+    this.status = "active";
     this.creationDate = new Date();
   }
 
@@ -49,6 +53,15 @@ export class Transaction {
     if (!["debit", "credit"].includes(this.type)) {
       throw new Error('Tipo de transação deve ser "debit" ou "credit"');
     }
+
+    if (!["OPERATIONAL" , "FINANCIAL" , "INVESTMENT"].includes(this.group)) {
+      throw new Error('Grupo da transação deve ser "OPERATIONAL" , "FINANCIAL" ou "INVESTMENT"');
+    }
+
+    if (!this.catogory) {
+      throw new Error("Categoria da transação é obrigatória");
+    }
+
     if (!this.originalDocumentId) {
       throw new Error("Id do documento original é obrigatório");
     }
@@ -63,16 +76,14 @@ export class Transaction {
       throw new Error('Tipo de transação deve ser "active" ou "inactive"');
     }
 
-    if ((this.status === "inactive") && !this.inactivatedBy) {
+    if (this.status === "inactive" && !this.inactivatedBy) {
       throw new Error(
         "Ao excluir uma transação, o usuário de exclusão deve ser informado"
       );
     }
 
-    if ((this.status === "inactive") && !this.id) {
-      throw new Error(
-        "Id da transação a ser excluida não informado"
-      );
+    if (this.status === "inactive" && !this.id) {
+      throw new Error("Id da transação a ser excluida não informado");
     }
   }
 
@@ -83,15 +94,17 @@ export class Transaction {
   }
 
   inactivate(userId: string): void {
-    if (this.status === 'inactive') {
-      throw new Error('Transação já foi inativada');
+    if (this.status === "inactive") {
+      throw new Error("Transação já foi inativada");
     }
 
     if (!userId || userId.trim().length === 0) {
-      throw new Error('Ao excluir uma transação, o usuário de exclusão deve ser informado');
+      throw new Error(
+        "Ao excluir uma transação, o usuário de exclusão deve ser informado"
+      );
     }
 
-    this.status = 'inactive';
+    this.status = "inactive";
     this.inactivatedBy = userId;
     this.inactivationDate = new Date();
   }

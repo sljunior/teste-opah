@@ -5,7 +5,6 @@ import { JsonEventPublisher } from "../../src/infrastructure/queue/jsonEventPubl
 import { TransactionCreatedEvent } from "../../src/application/events/transactionCreatedEvent";
 import { EventPublisher } from "../../src/application/ports/eventPublisher";
 
-
 class FakeEventPublisher implements EventPublisher<TransactionCreatedEvent> {
   public events: TransactionCreatedEvent[] = [];
 
@@ -17,7 +16,7 @@ class FakeEventPublisher implements EventPublisher<TransactionCreatedEvent> {
 describe("Create Transaction UseCase", () => {
   let publisher = new FakeEventPublisher();
   let repository: InMemoryTransactionRepository;
-  
+
   let useCase: CreateTransactionUseCase;
 
   beforeEach(() => {
@@ -30,6 +29,8 @@ describe("Create Transaction UseCase", () => {
       date: new Date(),
       value: 100,
       type: "credit" as const,
+      group: "OPERATIONAL" as const,
+      category: "Receita de Venda",
       originalDocumentId: "doc-123",
       createdBy: "user-1",
     };
@@ -53,6 +54,8 @@ describe("Create Transaction UseCase", () => {
       date: new Date(),
       value: 100,
       type: "credit" as const,
+      group: "OPERATIONAL" as const,
+      category: "Receita de Venda",
       originalDocumentId: "doc-123",
       createdBy: "user-1",
     };
