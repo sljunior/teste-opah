@@ -5,7 +5,15 @@ import { EventPublisher } from "../../application/ports/eventPublisher";
 export class JsonEventPublisher<T> implements EventPublisher<T> {
   constructor(private readonly filePath: string) {}
 
+  private writeQueue: Promise<void> = Promise.resolve();
+
   async publish(event: T): Promise<void> {
+    const task = this.writeQueue.then(() => this.appendEvent(event));
+    this.writeQueue = task.catch(() => undefined);
+    return task;
+  }
+
+  private async appendEvent(event: T): Promise<void> {
     await this.ensureDirectoryExists();
 
     const events = await this.readEvents();

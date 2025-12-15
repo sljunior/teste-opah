@@ -56,6 +56,9 @@ describe("InactivateTransactionUseCase", () => {
 
     expect(publisher.events.length).toBe(1);
     expect(publisher.events[0].originalDocumentId).toBe("doc-123");
+    expect(publisher.events[0].group).toBe("OPERATIONAL");
+    expect(publisher.events[0].category).toBe("Receita de Venda");
+    expect(publisher.events[0].inactivatedBy).toBe("user-2");
   });
 
   test("should throw error if transaction does not exist", async () => {

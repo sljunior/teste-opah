@@ -29,9 +29,12 @@ export class InactivateTransactionUseCase {
         date: transaction.date.toISOString(),
         value: transaction.value,
         type: transaction.type,
+        group: transaction.group,
+        category: transaction.catogory,
         originalDocumentId: transaction.originalDocumentId,
         createdBy: transaction.createdBy,
-        status: transaction.status
+        status: transaction.status,
+        inactivatedBy: transaction.inactivatedBy!,
       });
     return transaction;
   }
