@@ -16,6 +16,29 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 - Gerar fluxo de caixa diário a partir destes lançamentos
 - Geração de relatório consolidado que disponibilize o saldo do fluxo de caixa diário
 
+### Exemplo de Resultado Esperado
+
+Para o exercício, vamos gear um fluxo de caixa Diário simplificado conforme exemplo
+
+
+| SALDO INICIAL |             | R$ 100,00 |
+| :-------------- | ------------- | ----------- |
+| OPERACIONAIS  |             |           |
+| Entradas      |             |           |
+|               | Categoria 1 | 50,00     |
+|               | Categoria 2 | 20,00     |
+| Saídas       |             |           |
+|               | Categoria 1 | 10,00     |
+|               | Categoria 2 | 8,00      |
+| FINANCEIRAS   |             |           |
+| Entradas      |             |           |
+|               | Categoria 1 |           |
+|               | Categoria 2 |           |
+|               |             |           |
+| Saídas       |             |           |
+|               | Categoria 1 |           |
+|               | Categoria 2 |           |
+
 ### Domínios funcionais e Capacidade do negócio
 
 #### Domínios Funcionais
@@ -72,9 +95,9 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 1. [X] [Feito] **Requisitos de Negócio**: Inicio com criação do "Readme" do projeto, detalhando os requisitos de negócio.
 2. [X] **Desenho da arquitetura inicial**: Do requisito de negócio, desenhar arquitetura inicial, considerando o requisito nõa funcional de requisições.
 3. [X] **Validação inicial de requisitos**: Revisar arquitetura com base nos requisitos obrigatórios do exercício e diferenciais;
-4. [ ] Escolha da linguagem;
-   1. [ ] Documentar motivador da escolha.
-5. [ ] Criar estrutura base dos serviços e stack de testes;
+4. [X] Escolha da linguagem;
+   1. [X] Documentar motivador da escolha.
+5. [X] Criar estrutura base dos serviços e stack de testes;
 6. [ ] Desenvolvimento das soluções
 7. [ ] Revisão do fluxo
 
@@ -90,21 +113,18 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
 | cashflow-service-api       | Somente Leitura: responsável por ler os dados pré-calculados do fluxo de caixa e devolter ao usuário                                                                                                                                                     |
 
 2. **Escolha do banco de dados**: Optei por banco relacional (PostGreSql) tanto para gravação inicial dos dados quanto do Fluxo de caixa, entendendo que:
+
    1. Dados financeiros são críticos, demandam que o armazenamento também garanta integridade transacional das informações;
    2. Postgresql atende o requisito de volume esperado tanto de gravações e leituras por segundo;
    3. A escalabilidade horizontal dos serviços garante que o processamento pelos serviços não serão o gargalo técnico das operações
 3. **Escolha da Linguagem**: Para o exercício optei pelo Node.js com Typescript, pela simplicidade de codificação da linguagem, mas também considerando ser uma linguagem
+
    1. Amplamente difundida no mercado e com baixa curva de aprendizado, facilitando recrutamento de desenvolvedores;
    2. Grande comunidade ativa, facilitando a obtenção de pacotes e frameworks;
    3. Problema e solução propostos focam em I/O, sem cálculos complexos;
    4. Entrega performace suficiente para atendimento dos requisitos de negócio, mesmo em produção;
-
-4. **Controle de Eventos**: Para conseguir testar integração entre serviços no exercício proposto de forma simples, optei por salvar arquivos Json com os dados simulando a fila. Assim fica uma estrutura verificável a cada lançamento.
-
-**Alternativas Avaliadas**:
-
-- **Clojure (Java)**: Atende os requisitos do exercício em um cenário produtivo estruturamente indicada em cenários de cálculos em ****memória e alto paralelismo, podendo ser uma excelente escolha dependendo do restante da arquitetura da solução, principalmente para o cashflow-processor-service;
-- **Rust**: Curva de aprendizado complexa, além de ser necessários controles de estado de alta complexidade; Meu disgnóstico é que é uma solução mais robusta e complexa do que o cenário de negócio exige
+4. **Dados Mock**: Para o exercício proposto, decidi salvar os dados em memória/arquivo ao invés de salvar em estrutura real: Dados serão salvos em memória ao invés de banco de dados e a fila será simulada criando arquivo Json, para que assim todos os serviços consigam acessar os dados simulando transações mais próximas do real. Neste caso acaba ferindo alguns princípios como não possibilitar concorrência ou a possível reescrita completa dos arquivos a cada execução do projeto
+5. Não estou realizando validações profundas, como por exemplo: O grupo/Categoria XX só pode receber lançamento de Crédito ou Débito; Em um cenário real a categoria seria pré-cadastrada, mas deixei texto livre somente como ilustração do exercício
 
 ## Detalhamento técnico
 
@@ -117,10 +137,64 @@ Serviços envolvidos criam a camada de negócios que possibilita lançamento fin
   * Markdown Editor - Edição do Readme do projeto
   * "*Draw.io Integration created by Henning Dieterichs*" - Criação e Visualização dos diagramas do projeto
 
-#### Variáveis de Ambiente
+# EXECUTANDO OS PROJETOS
 
-#### Executando o projeto
+Todos os projetos seguirão os mesmos padrões:
 
-Instalação de dependências
+## Pré-requisitos
 
-{code}
+Necessário ter instalado
+
+- [Git](git-scm.com)
+- [Node.js](nodejs.org)
+- [npm](www.npmjs.com)
+
+## Executando o projeto
+
+Após clonar o repositório todo, acesse as pastas dos projetos e instale as dependências:
+
+```bash
+npm install
+```
+
+Execute o projeto:
+
+```bash
+npm run dev
+```
+
+Após iniciar o servidor, a aplicação estará acessível em `http://localhost:3000`.
+
+Execute os testes
+
+```bash
+npm run test
+```
+
+## Endpoints Disponíveis
+
+### Ledger Service API
+
+- **`POST /transactions`**: Cria uma nova transação financeira.
+  Exemplo de Payload:
+
+```bash
+{
+   "date": "data", //Data de competencia da transação
+   "value": 195.85, // Valor da transação em reais
+   "type": "credit", // Tipo da transação: debit ou credit
+   "group": "OPERATIONAL", //Grupo da transação: "OPERATIONAL" | "FINANCIAL" | "INVESTMENT"
+   "category": "Receita de Venda", // Categoria da transação:Texto livre
+   "originalDocumentId": "dossdddc-1234li", // Número único do documento original da transação
+   "createdBy": "sjunior" // ID do Usuário que está criando a transação
+}
+```
+
+- **`DELETE /transactions`**: Cancela uma nova transação financeira.
+  Exemplo de Payload:
+  ```bash
+    {
+    "transactionId": "9a53cb73-81a4-40c4-a37f-c2271d2e588a", //Id da transação original a ser cancelada
+    "userId": "sjunior" //id do usuário que está cancelando a transação
+    }
+  ```

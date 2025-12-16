@@ -1,0 +1,66 @@
+{
+  "2025-12-11": {
+    "date": "2025-12-11",
+    "entries": [
+      {
+        "group": "OPERATIONAL",
+        "category": "Receita de Venda",
+        "credit": 120010.20000000003,
+        "debit": 8388
+      }
+    ],
+    "openingBalance": 0,
+    "closingBalance": 111622.20000000003
+  },
+  "2025-12-15": {
+    "date": "2025-12-15",
+    "entries": [
+      {
+        "group": "OPERATIONAL",
+        "category": "Receita de Venda",
+        "credit": 154713.15000000005,
+        "debit": 0
+      },
+      {
+        "group": "FINANCIAL",
+        "category": "Despesa de Venda",
+        "credit": 0,
+        "debit": 12020.400000000005
+      },
+      {
+        "group": "OPERATIONAL",
+        "category": "Despesa de Venda",
+        "credit": 60005.1,
+        "debit": 88392.85000000002
+      }
+    ],
+    "openingBalance": 111622.20000000003,
+    "closingBalance": 225927.20000000007
+  },
+  "2025-12-16": {
+    "date": "2025-12-16",
+    "entries": [
+      {
+        "group": "OPERATIONAL",
+        "category": "Receita de Venda",
+        "credit": 160013.60000000003,
+        "debit": 0
+      }
+    ],
+    "openingBalance": 225927.20000000007,
+    "closingBalance": 385940.8000000001
+  },
+  "2025-12-21": {
+    "date": "2025-12-21",
+    "entries": [
+      {
+        "group": "OPERATIONAL",
+        "category": "Receita de Venda",
+        "credit": 80006.8,
+        "debit": 0
+      }
+    ],
+    "openingBalance": 385940.8000000001,
+    "closingBalance": 465947.6000000001
+  }
+}
