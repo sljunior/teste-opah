@@ -80,13 +80,25 @@ Para o exercício, vamos gear um fluxo de caixa Diário simplificado conforme ex
 
 ### Estimativa de Custos
 
-#### Infraestrutura
+**Cálculo de Armazenamento de transações**
+Calculo estimado no pior cenário de leitura, considerando que todas as leituras gerariam algum registro de banco de dados;
 
-#### Licenças/Assinaturas necessárias
+- 50 registros/Seg * 86400 = 4.320.000 registros /dia = 129.600.000 registros/mês;
+- Estimando 500 bytes por mensagem = 64GB em registros/mês ou 233TB/Ano
 
-### Monitoramento e Observabilidade
+**Serviços**
+Uso do Fargate EKS, garantindo escalabilidade horizontal, além de ter previsibilidade do custo com baixa manutenção;
 
-### Critérios de Segurança
+**Custo total estimado**: USD 36K/mês (431k/ano)
+
+- Amazon Aurora PostGreSql: 24k/mes
+- Amazon SQS: 136/mês
+- Elastic Load Balancing: 9.5k/mes
+- AWS Fargate: 2k/mes
+
+Estimativa detalhada disponível na pasta arquitetura,
+
+Link público do cálculo de estrutura: https://calculator.aws/#/estimate?id=0b3e929d04c4491ee2f145af706611f84f00aa0e
 
 ## Mapa de Decisões
 
@@ -98,8 +110,8 @@ Para o exercício, vamos gear um fluxo de caixa Diário simplificado conforme ex
 4. [X] Escolha da linguagem;
    1. [X] Documentar motivador da escolha.
 5. [X] Criar estrutura base dos serviços e stack de testes;
-6. [ ] Desenvolvimento das soluções
-7. [ ] Revisão do fluxo
+6. [X] Desenvolvimento das soluções
+7. [X] Revisão do fluxo
 
 ### Decisões de Arquitetura
 
@@ -125,6 +137,10 @@ Para o exercício, vamos gear um fluxo de caixa Diário simplificado conforme ex
    4. Entrega performace suficiente para atendimento dos requisitos de negócio, mesmo em produção;
 4. **Dados Mock**: Para o exercício proposto, decidi salvar os dados em memória/arquivo ao invés de salvar em estrutura real: Dados serão salvos em memória ao invés de banco de dados e a fila será simulada criando arquivo Json, para que assim todos os serviços consigam acessar os dados simulando transações mais próximas do real. Neste caso acaba ferindo alguns princípios como não possibilitar concorrência ou a possível reescrita completa dos arquivos a cada execução do projeto
 5. Não estou realizando validações profundas, como por exemplo: O grupo/Categoria XX só pode receber lançamento de Crédito ou Débito; Em um cenário real a categoria seria pré-cadastrada, mas deixei texto livre somente como ilustração do exercício
+6. O Serviço cashflow-processor-service sempre lê todos os lançamentos criados pelo ledger-service-api e não remove os lançamentos já processados, como seria o comportamento padrão de uma fila. Decisão foi tomada para facilitar o processo de visualização das informações para o exercicio proposto.
+7. O serviço cash-processor-service não possui um cron para leitura constante dos novos registros, só lendo no momento que o serviço é iniciado.
+
+IMPORTANTE: Por questão de tempo disponível, não criei o detalhamento do serviço "cashflow-service-api", entendendo que as partes mais complexas envolvem os outros dois serviços;
 
 ## Detalhamento técnico
 
@@ -151,7 +167,8 @@ Necessário ter instalado
 
 ## Executando o projeto
 
-Após clonar o repositório todo, acesse as pastas dos projetos e instale as dependências:
+Todos os serviços necessários para o projeto estão na mesma pasta "opah";
+Os passos são os mesmos abaixo para todos os serviços. É necessário acessar a pasta de cada sub-projeto (cashflow-processor-service / ledger-service-api / cashflow-service-api) e executar os comandos abaixo na sequencia:
 
 ```bash
 npm install
@@ -198,3 +215,32 @@ npm run test
     "userId": "sjunior" //id do usuário que está cancelando a transação
     }
   ```
+
+### Cashflow-processor-service
+
+Serviço não disponibiliza nenhum endpoint. Ao ser executado, o serviço irá ler todos os arquivos gerados no arquivo queue/transaction.json, criado pelo ledger-service-api e criar o arquivo queue/cashflow.json com os registros do fluxo de caixa prontos para serem lidos.
+
+### cashflow-service-api
+
+== Serviço não implementado ==
+O objetivo desse serviço para esse exercício é expor um endpoint, retornando os dados de fluxo de caixa.
+
+Exemplo:
+
+- **`GET /dailyCashFlow?date=yyyy-mm-dd`**: Retorna os dados do fluxo de caixa de um dia específico
+
+```json
+ "2025-12-11": {
+    "date": "2025-12-11",
+    "entries": [
+      {
+        "group": "OPERATIONAL",
+        "category": "Receita de Venda",
+        "credit": 120010.20000000003,
+        "debit": 8388
+      }
+    ],
+    "openingBalance": 0,
+    "closingBalance": 111622.20000000003
+  },
+```

@@ -1,0 +1,98 @@
+{
+	"Nome": "My Estimate",
+	"Custo total": {
+		"mensal": "35940.76",
+		"Pagamento adiantado": "0.00",
+		"12 meses": "431289.12"
+	},
+	"Metadados": {
+		"Moeda": "USD",
+		"Localidade": "pt_BR",
+		"Criado em": "15/12/2025",
+		"Isenção de responsabilidade legal": "A Calculadora de Preços da AWS fornece apenas uma estimativa de suas taxas da AWS e não inclui nenhuma taxa aplicável. Suas taxas reais dependem de vários fatores, inclusive de seu uso real dos serviços da AWS.",
+		"Compartilhar URL": "https://calculator.aws/#/estimate?id=cd9959ba036113308b8bebe3a67b5dc0b3cef43c"
+	},
+	"Grupos": {
+		"Serviços": [
+			{
+				"Nome do serviço": "Amazon Aurora PostgreSQL-Compatible DB",
+				"Descrição": "Opah - Cost Estimation",
+				"Região": "Leste dos EUA (Ohio)",
+				"Status": "",
+				"Custo do serviço": {
+					"mensal": "24543.80",
+					"Pagamento adiantado": "0.00",
+					"12 meses": "294525.60"
+				},
+				"Propriedades": {
+					"Opção de configuração de cluster do Aurora PostgreSQL": "Otimizada para E/S do Aurora",
+					"Nós": "2",
+					"Tipo de instância": "db.x2g.xlarge",
+					"Utilização": "100 %Utilized/Month",
+					"Modelo de preço": "OnDemand",
+					"Quantidade de armazenamento": "100 TB"
+				}
+			},
+			{
+				"Nome do serviço": "Amazon Simple Queue Service (SQS)",
+				"Região": "Leste dos EUA (Ohio)",
+				"Status": "",
+				"Custo do serviço": {
+					"mensal": "136.87",
+					"Pagamento adiantado": "0.00",
+					"12 meses": "1642.44"
+				},
+				"Propriedades": {
+					"Solicitações de fila padrão": "5 milhões por dia",
+					"Solicitações de fila FIFO": "5 milhões por dia"
+				}
+			},
+			{
+				"Nome do serviço": "Application Load Balancer",
+				"Região": "Leste dos EUA (Ohio)",
+				"Status": "",
+				"Custo do serviço": {
+					"mensal": "9376.85",
+					"Pagamento adiantado": "0.00",
+					"12 meses": "112522.20"
+				},
+				"Propriedades": {
+					"Número de Application Load Balancers": "2"
+				}
+			},
+			{
+				"Nome do serviço": "Network Load Balancer",
+				"Região": "Leste dos EUA (Ohio)",
+				"Status": "",
+				"Custo do serviço": {
+					"mensal": "153.31",
+					"Pagamento adiantado": "0.00",
+					"12 meses": "1839.72"
+				},
+				"Propriedades": {
+					"Número de Network Load Balancers": "1",
+					"Número médio de novas conexões TCP": "25000 por segundo",
+					"Duração média da conexão TCP": "6 segundos"
+				}
+			},
+			{
+				"Nome do serviço": "AWS Fargate",
+				"Descrição": "Fargate - 3 Serviços",
+				"Região": "Leste dos EUA (Ohio)",
+				"Status": "",
+				"Custo do serviço": {
+					"mensal": "1729.93",
+					"Pagamento adiantado": "0.00",
+					"12 meses": "20759.16"
+				},
+				"Propriedades": {
+					"Sistema operacional": "Linux",
+					"Arquitetura de CPU": "x86",
+					"Duração média": "1 minutos",
+					"Número de tarefas ou pods": "5 por minuto",
+					"Quantidade de armazenamento temporário alocada para o Amazon ECS": "20 GB"
+				}
+			}
+		]
+	}
+}
